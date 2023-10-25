@@ -1,5 +1,7 @@
 import { exec } from 'child_process';
 import express from 'express';
+import path from 'path';
+import execute from './execute';
 const app = express()
 const port = 2475
 
@@ -21,21 +23,10 @@ app.listen(port, () => {
 app.post('/audio', upload.single('file'), (req: any, res) => {
     const file = req.file;
     console.log(`Received  ${file}, ${JSON.stringify(file)}`)
-    var command = `whisper "${file.path}" --model tiny.en --fp16 False --output_dir ./src/uploads`
-    console.log('Executing', command)
-    exec(command, (err, stdout, stderr) => {
-        if (err) {
-            console.log("Error", err)
-            res.send(err)
-        }
-        else if (stderr) console.log("StdErr", stderr)
-        else if (stdout) {
-            console.log("StdOut", stdout)
-            res.appendHeader("Access-Control-Allow-Origin", "*")
-            res.appendHeader("Access-Control-Allow-Headers", "*")
-            res.send(stdout);
-        }
-    })
+    var result = execute(file.path)
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    console.log(`Sending to client ${result}`)
+    res.end(result)
 });
 
 // app.listen(3000, () => console.log('Server is started at port number 3000'));
