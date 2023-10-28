@@ -21,4 +21,13 @@ app.post('whisper/audio', upload.single('file'), (req: any, res) => {
     res.end(result)
 });
 
+
+app.post('open_clip/image', upload.single('file'), (req: any, res) => {
+    const file = req.file;
+    console.log(`Received  ${file}, ${JSON.stringify(file)}`)
+    var result = execute(file.path)
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    console.log(`Sending to client ${result}`)
+    res.end(result)
+});
 // app.listen(3000, () => console.log('Server is started at port number 3000'));
