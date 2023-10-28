@@ -8,7 +8,7 @@ export function path_test(input_path: String) {
 
 export default function execute(input_path: any) {
     const parent_path = path.dirname(input_path)
-    const command = `python .\\src\\models\\open_clip\\app.py "${input_path}" "${parent_path}"`
+    const command = `python .\\models\\open_clip\\app.py "${input_path}" "${parent_path}"`
     execSync(command).toString()
     const output_path = parent_path + "\\output.txt";
     const result = readFileSync(output_path).toString();
