@@ -3,6 +3,9 @@ import execute from '../src/integrations/open_clip/execute';
 
 describe('Open Clip', () => {
   test('image captioning', () => {
-    expect(execute('hello1')).toBe('hello1')
+    const obtained = execute(__dirname + '\\assets\\CLIP.png')
+    const expected = `there are many different animals in this collage `
+    console.log(obtained, '\n', expected)
+    expect(obtained).toBe(expected)
   });
 });

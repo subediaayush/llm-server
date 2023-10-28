@@ -11,7 +11,9 @@ model, _, transform = open_clip.create_model_and_transforms(
 
 args = sys.argv
 
-input_file = args[-1]
+input_file = args[-2]
+output_path = args[-1]
+
 print("Loading " + input_file)
 
 im = Image.open(input_file).convert("RGB")
@@ -21,6 +23,6 @@ with torch.no_grad(), torch.cuda.amp.autocast():
   generated = model.generate(im)
 
 output = open_clip.decode(generated[0]).split("<end_of_text>")[0].replace("<start_of_text>", "")
-ou = os.open('output.txt', os.O_WRONLY | os.O_CREAT)
+ou = os.open(output_path + '\output.txt', os.O_WRONLY | os.O_CREAT)
 os.write(ou, output.encode())
 os.close(ou)
