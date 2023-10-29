@@ -1,6 +1,7 @@
 import { exec, execSync } from "child_process";
 import { readFileSync } from "fs";
 import path from "path";
+import { PythonRunner } from "../python_runner";
 
 export function path_test(input_path: String) {
     console.log(input_path)
@@ -8,10 +9,5 @@ export function path_test(input_path: String) {
 
 export default function execute(input_path: any) {
     const parent_path = path.dirname(input_path)
-    const command = `python .\\models\\open_clip\\app.py "${input_path}" "${parent_path}"`
-    execSync(command).toString()
-    const output_path = parent_path + "\\output.txt";
-    const result = readFileSync(output_path).toString();
-
-    return result
+    return new PythonRunner("open_clip", parent_path, { input_path: input_path }).run()
 }
