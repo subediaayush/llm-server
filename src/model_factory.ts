@@ -1,3 +1,4 @@
+import path from "path";
 import { BinaryRunner } from "./integrations/binary_runner"
 import { PythonRunner } from "./integrations/python_runner"
 import { OpenClipRunner, WhisperRunner } from "./integrations/runners"
@@ -53,15 +54,23 @@ interface OpenClipModelDefinitionParams extends ModelDefinitionParams {
 class WhisperModelDefinition extends ModelDefinition {
     
     getRunner(params?: any): BinaryRunner {
-        const inputPath = this.args.audio.path
+        const inputPath = ".\\uploads\\" + path.basename(this.args.audio.path)
         return new WhisperRunner(inputPath)
     }
 
-    supports(): boolean {
-        return !this.args.audio && this.args.output === "text/plain"
+    isSupported(): boolean {
+        return this.args.audio && (this.args.output.startsWith("*/*") || this.args.output.startsWith("text/plain"))
     }
 }
 
 class OpenClipModelDefinition extends ModelDefinition {
     
+    getRunner(params?: any): BinaryRunner {
+        const inputPath = ".\\uploads\\" + path.basename(this.args.image.path)
+        return new OpenClipRunner(inputPath)
+    }
+
+    isSupported(): boolean {
+        return this.args.image && (this.args.output.startsWith("*/*") || this.args.output.startsWith("text/plain"))
+    }
 }

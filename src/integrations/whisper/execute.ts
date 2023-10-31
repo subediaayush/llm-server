@@ -9,5 +9,5 @@ export default function execute(input_path: any) {
     const file_name = path.basename(input_path).replace(".wav", ".txt")
     var output_path = parent_path + "\\" + file_name
 
-    return new WhisperRunner(input_path, output_path).run()
+    // return new WhisperRunner(input_path, output_path).run()
 }

@@ -5,14 +5,23 @@ import { PythonRunner } from "./python_runner";
 export class WhisperRunner extends BinaryRunner {
 
     constructor(inputPath: string) {
+        const changeFileExtension = (str: string, ext: string) => str.split('.')[0] + `.${ext}`
+
         const parentPath = path.dirname(inputPath)
-        const outputPath = parentPath + "\\output.txt"
-    
-        super("whipser", 'whisper "${input_path}" --model tiny.en --fp16 False --output_dir "${output_path}\" --output_format txt', outputPath, {
-            "input_path": inputPath,
-            "output_path": outputPath
-        })
+        const filename = path.basename(inputPath)
+
+        const outputPath = parentPath + "\\" + changeFileExtension(filename, 'txt')
+
+        super("whisper", "whisper",
+            ['${input_path}', '--model', 'tiny.en', '--fp16', 'False', '--output_dir', '${output_path}', '--output_format', 'txt'],
+            outputPath,
+            {
+                "input_path": inputPath,
+                "output_path": parentPath
+            })
+
     }
+
 
 }
 
@@ -21,9 +30,9 @@ export class OpenClipRunner extends PythonRunner {
         const parentPath = path.dirname(inputPath)
         const outputPath = parentPath + "\\output.txt"
 
-        super("open_clip", parentPath, {
-            "input_path": inputPath,
-            "output_path": outputPath
+        super("open_clip", outputPath, {
+            "input_path": `"${inputPath}"`,
+            "output_path": `"${parentPath}"`
         })
     }
 }

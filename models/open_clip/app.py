@@ -11,8 +11,8 @@ model, _, transform = open_clip.create_model_and_transforms(
 
 args = sys.argv
 
-input_file = args[-2]
-output_path = args[-1]
+input_file = args[-2].replace('"', '')
+output_path = args[-1].replace('"', '')
 
 print("Loading " + input_file)
 
