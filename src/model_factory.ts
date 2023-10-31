@@ -1,7 +1,7 @@
 import path from "path";
 import { BinaryRunner } from "./integrations/binary_runner"
 import { PythonRunner } from "./integrations/python_runner"
-import { OpenClipRunner, WhisperRunner } from "./integrations/runners"
+import { Gpt4AllRunner, OpenClipRunner, WhisperRunner } from "./integrations/runners"
 import { MulterFile } from "./interface/file";
 
 export class ModelDefinitionRegistry {
@@ -12,6 +12,8 @@ export class ModelDefinitionRegistry {
                 return new WhisperModelDefinition(params);
             case 'open_clip':
                 return new OpenClipModelDefinition(params);
+            case 'gpt4all':
+                return new Gpt4AllModelDefinition(params);
         }
     }
 
@@ -49,6 +51,17 @@ interface WhisperModelDefinitionParams extends ModelDefinitionParams {
 
 interface OpenClipModelDefinitionParams extends ModelDefinitionParams {
     inputPath: string;
+}
+
+class Gpt4AllModelDefinition extends ModelDefinition {
+    
+    getRunner(params?: any): BinaryRunner {
+        return new Gpt4AllRunner(this.args.text)
+    }
+
+    isSupported(): boolean {
+        return this.args.text?.length > 0 && (this.args.output.startsWith("*/*") || this.args.output.startsWith("text/plain"))
+    }
 }
 
 class WhisperModelDefinition extends ModelDefinition {

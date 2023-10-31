@@ -41,7 +41,7 @@ app.post('/query', multerHandler, (req: any, res: any, next: NextFunction) => {
         res.setHeader("Access-Control-Allow-Headers", "*")
         
         const runner = definition.getRunner()
-        console.log(`Obtained runner ${{...runner}}`)
+        console.log(`Obtained runner for params ${params}: ${{...runner}}`)
         runner.run((result, err) => {
             if (err) next(err)
             else res.end(result)

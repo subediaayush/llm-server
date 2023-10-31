@@ -30,9 +30,14 @@ export class OpenClipRunner extends PythonRunner {
         const parentPath = path.dirname(inputPath)
         const outputPath = parentPath + "\\output.txt"
 
-        super("open_clip", outputPath, {
-            "input_path": `"${inputPath}"`,
-            "output_path": `"${parentPath}"`
-        })
+        super("open_clip", outputPath, [`"${inputPath}"`, `"${parentPath}"`])
+    }
+}
+
+export class Gpt4AllRunner extends PythonRunner {
+    constructor(prompt: string) {
+        const outputPath = ".\\uploads"
+
+        super("gpt4all", `${outputPath}\\output.txt`, [prompt, `"${outputPath}"`])
     }
 }

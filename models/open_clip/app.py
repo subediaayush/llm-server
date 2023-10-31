@@ -23,6 +23,9 @@ with torch.no_grad(), torch.cuda.amp.autocast():
   generated = model.generate(im)
 
 output = open_clip.decode(generated[0]).split("<end_of_text>")[0].replace("<start_of_text>", "")
-ou = os.open(output_path + '\output.txt', os.O_WRONLY | os.O_CREAT)
+print("obtained output " + output)
+print("writing to file " + output_path + "\output.txt")
+
+ou = os.open(output_path + '\output.txt', os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
 os.write(ou, output.encode())
 os.close(ou)
